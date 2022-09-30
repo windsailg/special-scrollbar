@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Special scrollbar</title>
+    <style>
+      .matsuri__block {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .matsuri__box {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        width: 100%;
+        position: fixed;
+        width: 100%;
+        max-width: 60px;
+        height: 100000vh;
+        top: 0;
+        z-index: 99;
+      }
+
+      .matsuri__box.right {
+        right: 20px;
+      }
+
+      .matsuri__box.left {
+        left: 20px;
+      }
+
+      .matsuri__banner {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        width: 100%;
+        -webkit-transition: 80ms all ease-in-out;
+        -o-transition: 80ms all ease-in-out;
+        transition: 80ms all ease-in-out;
+        position: relative;
+        top: 0;
+        height: 100%;
+        background-repeat: repeat-y;
+        background-position: top;
+        background-size: auto;
+        background-image: url('../images/matsuri.jpg');
+      }
+
+      .matsuri__text {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        width: 100%;
+        -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        width: 100%;
+        height: 300px;
+        color: #d1322f;
+        font-size: 2rem;
+      }
+
+      .matsuri__text div {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        width: 100%;
+        min-width: 140px;
+        font-weight: bold;
+      }
+
+      .matsuri__text span {
+        font-weight: bold;
+      }
+
+      .container {
+        height: 15000px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Special matsuri decoration -->
+    <div class="container">
+      <div class="matsuri__block">
+        <div class="matsuri__box right">
+          <div
+            class="matsuri__banner marquee"
+            data-scroll
+            data-scroll-speed="-2"
+          ></div>
+        </div>
+        <div class="matsuri__box left">
+          <div
+            class="matsuri__banner marquee"
+            data-scroll
+            data-scroll-speed="-2"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+      // 取得class 為 marquee 的 dom 元素
+      const Marquees = document.querySelectorAll('.marquee')
+
+      // 取得 dom 中的 body
+      const body = document.querySelector('body')
+
+      // 宣告兩組變數 offest scrollHeight 用於定義位移高度
+      let offset = 0
+      let scrollHeight = 0
+
+      // 這組功能為 "設定位移的高度"
+      const setOffset = () => {
+        // 執行兩條跑馬燈移動 功能
+        marqueeMove()
+
+        // 滾動高度 小於 視窗的頂部
+        // 判斷是往下滾動還是往上滾動
+        
+        if (scrollHeight < window.scrollY) {// 如果是往下滾動
+          scrollHeight = window.scrollY
+          offset -= 3
+        } else {// 否則
+          scrollHeight = window.scrollY
+          offset += 3
+        }
+        body.style.paddingTop = '0px'
+      }
+
+      // 隨著時間 會自動位移 0.6px
+      const plusOffset = () => {
+        offset += 0.6
+        // 呼叫跑馬燈位移功能
+        marqueeMove()
+        // 動畫無限迴圈 最佳化迴圈間隔 requestAnimationFrame
+        window.requestAnimationFrame(plusOffset)
+      }
+
+      // 跑馬燈位移功能
+      const marqueeMove = () => {
+        // 迴圈找到跑馬燈陣列中的每個 bar
+        Marquees.forEach((m) => {
+          // 每個 bar 移動 位移高度變數中的值 
+          m.style.backgroundPositionY = -offset + 'px'
+        })
+      }
+
+      // 執行一次就可以無限迴圈
+      plusOffset()
+
+      // 整個視窗 監聽滑鼠滾動事件 只要滾動就執行 setOffset 功能
+      window.addEventListener('scroll', setOffset)
+    </script>
+  </body>
+</html>
