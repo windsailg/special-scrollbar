@@ -160,9 +160,6 @@
       // 取得class 為 marquee 的 dom 元素
       const Marquees = document.querySelectorAll('.marquee')
 
-      // 取得 dom 中的 body
-      const body = document.querySelector('body')
-
       // 宣告兩組變數 offest scrollHeight 用於定義位移高度
       let offset = 0
       let scrollHeight = 0
@@ -174,7 +171,6 @@
 
         // 滾動高度 小於 視窗的頂部
         // 判斷是往下滾動還是往上滾動
-        
         if (scrollHeight < window.scrollY) {// 如果是往下滾動
           scrollHeight = window.scrollY
           offset -= 3
@@ -182,7 +178,6 @@
           scrollHeight = window.scrollY
           offset += 3
         }
-        body.style.paddingTop = '0px'
       }
 
       // 隨著時間 會自動位移 0.6px
